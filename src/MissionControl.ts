@@ -18,11 +18,17 @@ export class MissionControl {
     }
 
     public executeMissions(): void {
-        let drawn = random(this.cargoArray.length);
+        let drawn = random(this.cargoArray.length);        
+
+        console.log(`Assigned spacecraft: ${this.spacecraft.name} | Fuel: ${this.spacecraft.fuel} | Capacity: ${this.spacecraft.cargo_capacity}`);
+
+        console.log();
+
         for(let i = 0; i < 2; i++){
             let trip: string[] = [];
+            const initialCargoCapacity = this.spacecraft.cargo_capacity; 
             while(this.spacecraft.cargoForTransport.length <= 0){
-                this.spacecraft.pickUpCargo(this.cargoArray[random(this.cargoArray.length)]);
+                this.spacecraft.pickUpCargo(this.cargoArray[random(drawn)]);
             }
             
             trip = this.spacecraft.travel(this.planetsArray[drawn]);
@@ -30,7 +36,9 @@ export class MissionControl {
             this.report(this.spacecraft.name, this.planetsArray[drawn].name, this.spacecraft.fuel, this.spacecraft.cargo_capacity);
             this.planetsArray.splice(drawn, 1);
             this.cargoArray.splice(drawn, 1);
-            
+            this.spacecraft.cargoForTransport.pop()
+            this.spacecraft.cargo_capacity = initialCargoCapacity;
+
             console.log();
         }
     }
@@ -39,6 +47,6 @@ export class MissionControl {
         console.log(`Mission: ${spacecraftName} -> ${planetName}`);
         console.log(this.reportMission[0]);
         console.log(this.reportMission[1]);
-        console.log(`Fuel remaining: ${fuel.toFixed(1)} | Capacity remaining: ${capacity}`)
+        console.log(`Fuel remaining: ${fuel.toFixed(1)} | Capacity remaining: ${capacity}`);
     }
 }

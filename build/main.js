@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Spacecraft_1 = require("./Spacecraft");
+const utils_1 = require("./utils");
+const MissionControl_1 = require("./MissionControl");
+const planets = (0, utils_1.generateRandomPlanets)(4);
+const cargos = (0, utils_1.generateRandomCargos)(3);
+const ship = new Spacecraft_1.CargoShip((0, utils_1.generateNameSpacecraft)());
+const control = new MissionControl_1.MissionControl(ship, cargos, planets);
+control.executeMissions();
