@@ -4,7 +4,6 @@ import { CargoShip, MiningShip, ExplorationShip, Spacecraft } from "./Spacecraft
 
 const namePlanets = ['Elarion', 'Nythera', 'Zairon', 'Velquor', 'Aurelya', 'Thalmyra', 'Noctyra', 'Khaldor'];
 
-const nameSpacecrafts = ['Stellarion', 'Nebula V', 'Galactrix', 'Orion Prime', 'Vanguard XI', 'Sentinela 7', 'Crucible', 'Argos Lanceiro'];
 
 export function random(n:number) {
     return Math.floor(Math.random() * n);
@@ -12,10 +11,6 @@ export function random(n:number) {
 
 export function generateNamePlanets() :string {
     return namePlanets[random(namePlanets.length)];
-}
-
-export function generateNameSpacecraft() :string {
-    return nameSpacecrafts[random(nameSpacecrafts.length)];
 }
 
 export function generateRandomPlanets(quant_planets: number): Planet[] {
@@ -45,32 +40,34 @@ export function generateRandomPlanets(quant_planets: number): Planet[] {
 export function generateRandomFleet(quant_spacecrafts: number) :Spacecraft[] {
     const SpacecraftsArray: Spacecraft[] = [];
     const names: String[] = [];
-    for(let i = 0; i < quant_spacecrafts; i++) { 
-        let nameSpacecraft = generateNameSpacecraft();
-        while (nameSpacecraft in names) {
-            nameSpacecraft = generateNameSpacecraft();
-            
-            if (nameSpacecraft in names === false) {
-                break;
-            }
-        }
 
-        let aleatory = random(3);
+    let count_CargoShip = 1; 
+    let count_MininigShip = 1; 
+    let count_ExplorationShip = 1;
+
+    for(let i = 0; i < quant_spacecrafts; i++) {
+
+        let numSpacecraft = String(i+1);
+
+            let aleatory = random(3);
 
         if (aleatory === 0) {
-            let a = new CargoShip(nameSpacecraft);
-            SpacecraftsArray.push(a);
-        } else if (aleatory === 1) {
-            let a = new MiningShip(nameSpacecraft);
-            SpacecraftsArray.push(a);
-        } else if (aleatory === 2) {
-            let a = new ExplorationShip(nameSpacecraft);
-            SpacecraftsArray.push(a);
+                let a = new CargoShip('CargoShip-'+count_CargoShip);
+                SpacecraftsArray.push(a);
+                count_CargoShip++;
+            } else if (aleatory === 1) {
+                let a = new MiningShip('MiningShip-'+count_MininigShip);
+                SpacecraftsArray.push(a);
+                count_MininigShip++;
+            } else if (aleatory === 2) {
+                let a = new ExplorationShip('ExplorationShip-'+count_ExplorationShip);
+                count_ExplorationShip++;
+                SpacecraftsArray.push(a);
+            }
         }
+            return SpacecraftsArray;  
     }
     
-    return SpacecraftsArray;
-}
 
 export function generateRandomCargos(quant_cargos: number) :Cargo[] {
     const CargosArray: Cargo[] = [];

@@ -1,5 +1,6 @@
 import { Cargo } from "./Cargo";
 import { Planet } from "./Planet";
+import { generateRandomCargos, generateRandomPlanets } from "./utils";
 
 export abstract class Spacecraft {
     public readonly name: string;
@@ -31,17 +32,27 @@ export abstract class Spacecraft {
     }
 
     public travel(destination: Planet) :string[] {
+        if(this.cargoForTransport[0] == undefined){
+                this.cargoForTransport[0] = generateRandomCargos(1)[0];
+            }
         const report_travel: string[] = [];
+        if(destination === undefined){
+            destination = generateRandomPlanets(1)[0];
+        }
         let consumption = destination.distanceFromEarth/this.distancePerLiter;
         if(consumption >= this.fuel) {
             report_travel.push('Insufficient fuel.');
             report_travel.push(`${this.name} failed to deliver "${this.cargoForTransport[0].typeCargo}": It was not possible to make the trip.`);
         } else {
-            this.fuel -= destination.distanceFromEarth/this.distancePerLiter;
+            this.fuel -= consumption;
+            if(this.cargoForTransport[0].weightCargo == undefined){
+                this.pickUpCargo(generateRandomCargos(1)[0]);
+            }
             this.cargo_capacity -= this.cargoForTransport[0].weightCargo
-            report_travel.push(`${this.name} traveled to ${destination.name} (${destination.distanceFromEarth}M k).`)
+            report_travel.push(`${this.name} traveled to ${destination.name} (${destination.distanceFromEarth}M km).`)
         
             if(this.cargoForTransport[0].weightCargo > this.cargo_capacity) {
+                report_travel[0] = `${this.name} quickly reached (${destination.distanceFromEarth}M km).`
                 report_travel.push(`${this.name} failed to deliver "${this.cargoForTransport[0].typeCargo}": exceeds capacity.`);
             } else {
                 report_travel.push(`${this.name} delivered "${this.cargoForTransport[0].typeCargo}" to ${destination.name}.`);

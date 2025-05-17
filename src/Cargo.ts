@@ -8,7 +8,7 @@ export abstract class Cargo {
 }
 
 export class HeavyCargo extends Cargo {
-    private static initialWeight = 27;
+    private static initialWeight = 40;
     private static initialTypeCargo: typeCargo = 'equipment';
 
     constructor(){
